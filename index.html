@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrecisionRuler — Online Ruler with Real-Size Measurement</title>
+  <meta name="description" content="Free online ruler tool with real-size measurements. Calibrate using auto-detect, screen diagonal, or credit card method. Rulers on all 4 edges, draggable guides, cm, mm, and inch support." />
+  <meta name="keywords" content="online ruler, screen ruler, cm ruler, inch ruler, pixel ruler, real size ruler, calibrate screen" />
+  <meta property="og:title" content="PrecisionRuler — Online Ruler Tool" />
+  <meta property="og:description" content="Measure anything in real size on your screen. Auto-calibrate, drag guides, switch units." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0d1117" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════ TOOLBAR ═══ -->
+  <header class="toolbar" id="toolbar" role="banner">
+    <div class="toolbar-left">
+      <div class="logo" id="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="1" y="5" width="18" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="4" y1="5" x2="4" y2="10" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="7" y1="5" x2="7" y2="8" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="10" y1="5" x2="10" y2="10" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="13" y1="5" x2="13" y2="8" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="16" y1="5" x2="16" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="logo-text">PrecisionRuler</span>
+      </div>
+    </div>
+
+    <div class="toolbar-center">
+      <!-- Unit Switcher -->
+      <div class="unit-switcher" id="unit-switcher" role="group" aria-label="Unit selection">
+        <button class="unit-btn active" data-unit="cm" id="btn-unit-cm">cm</button>
+        <button class="unit-btn" data-unit="mm" id="btn-unit-mm">mm</button>
+        <button class="unit-btn" data-unit="in" id="btn-unit-in">inch</button>
+        <button class="unit-btn" data-unit="px" id="btn-unit-px">px</button>
+      </div>
+
+      <!-- Divider -->
+      <div class="toolbar-divider"></div>
+
+      <!-- Edge Toggles -->
+      <div class="edge-toggles" role="group" aria-label="Ruler edge toggles">
+        <button class="edge-btn active" data-edge="top" id="btn-edge-top" title="Toggle top ruler (T)">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="4" rx="1" fill="currentColor" opacity="0.9"/><rect x="1" y="7" width="14" height="2" rx="1" fill="currentColor" opacity="0.2"/><rect x="1" y="11" width="14" height="2" rx="1" fill="currentColor" opacity="0.2"/></svg>
+          <span>Top</span>
+        </button>
+        <button class="edge-btn active" data-edge="bottom" id="btn-edge-bottom" title="Toggle bottom ruler">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="11" width="14" height="4" rx="1" fill="currentColor" opacity="0.9"/><rect x="1" y="7" width="14" height="2" rx="1" fill="currentColor" opacity="0.2"/><rect x="1" y="1" width="14" height="2" rx="1" fill="currentColor" opacity="0.2"/></svg>
+          <span>Bottom</span>
+        </button>
+        <button class="edge-btn active" data-edge="left" id="btn-edge-left" title="Toggle left ruler">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="1" width="4" height="14" rx="1" fill="currentColor" opacity="0.9"/><rect x="7" y="1" width="2" height="14" rx="1" fill="currentColor" opacity="0.2"/><rect x="11" y="1" width="2" height="14" rx="1" fill="currentColor" opacity="0.2"/></svg>
+          <span>Left</span>
+        </button>
+        <button class="edge-btn active" data-edge="right" id="btn-edge-right" title="Toggle right ruler">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="11" y="1" width="4" height="14" rx="1" fill="currentColor" opacity="0.9"/><rect x="7" y="1" width="2" height="14" rx="1" fill="currentColor" opacity="0.2"/><rect x="1" y="1" width="2" height="14" rx="1" fill="currentColor" opacity="0.2"/></svg>
+          <span>Right</span>
+        </button>
+      </div>
+
+      <div class="toolbar-divider"></div>
+
+      <!-- Tools -->
+      <div class="tool-group" role="group" aria-label="Measurement tools">
+        <button class="tool-btn" id="btn-guide-h" title="Add horizontal guide (H)">
+          <svg width="16" height="16" viewBox="0 0 16 16"><line x1="0" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="2" stroke-dasharray="3,2"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+          <span>H-Guide</span>
+        </button>
+        <button class="tool-btn" id="btn-guide-v" title="Add vertical guide (V)">
+          <svg width="16" height="16" viewBox="0 0 16 16"><line x1="8" y1="0" x2="8" y2="16" stroke="currentColor" stroke-width="2" stroke-dasharray="3,2"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+          <span>V-Guide</span>
+        </button>
+        <button class="tool-btn" id="btn-measure" title="Point-to-point measure (M)">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="3" cy="13" r="2" fill="currentColor"/><circle cx="13" cy="3" r="2" fill="currentColor"/><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/></svg>
+          <span>Measure</span>
+        </button>
+        <button class="tool-btn" id="btn-clear-guides" title="Clear all guides">
+          <svg width="16" height="16" viewBox="0 0 16 16"><line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Clear</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="toolbar-right">
+      <!-- Calibrate -->
+      <button class="action-btn calibrate-btn" id="btn-calibrate" title="Calibrate screen (C)">
+        <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/><line x1="8" y1="1" x2="8" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="12" x2="8" y2="15" stroke="currentColor" stroke-width="1.5"/><line x1="1" y1="8" x2="4" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+        Calibrate
+      </button>
+      <!-- Fullscreen -->
+      <button class="icon-btn" id="btn-fullscreen" title="Fullscreen (F)">
+        <svg id="icon-fullscreen-enter" width="18" height="18" viewBox="0 0 18 18"><path d="M1 5V2a1 1 0 0 1 1-1h3M13 1h3a1 1 0 0 1 1 1v3M17 13v3a1 1 0 0 1-1 1h-3M5 17H2a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg id="icon-fullscreen-exit" width="18" height="18" viewBox="0 0 18 18" style="display:none"><path d="M5 2v3H2M13 2v3h3M5 16v-3H2M13 16v-3h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <!-- Theme toggle -->
+      <button class="icon-btn" id="btn-theme" title="Toggle theme">
+        <svg id="icon-moon" width="18" height="18" viewBox="0 0 18 18"><path d="M14 10a6 6 0 0 1-8-8 7 7 0 1 0 8 8z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <svg id="icon-sun" width="18" height="18" viewBox="0 0 18 18" style="display:none"><circle cx="9" cy="9" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="9" y1="1" x2="9" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="15" x2="9" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="9" x2="3" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="9" x2="17" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════ STATUS BAR ═══ -->
+  <div class="status-bar" id="status-bar">
+    <div class="status-item" id="ppi-display">
+      <span class="status-label">PPI</span>
+      <span class="status-value" id="ppi-value">—</span>
+    </div>
+    <div class="status-divider"></div>
+    <div class="status-item" id="calibration-badge">
+      <span class="badge-dot" id="badge-dot"></span>
+      <span class="status-value" id="calibration-method-label">Not calibrated</span>
+    </div>
+    <div class="status-divider"></div>
+    <div class="status-item" id="cursor-pos-display">
+      <span class="status-label">Cursor</span>
+      <span class="status-value" id="cursor-value">—</span>
+    </div>
+    <div class="status-divider"></div>
+    <div class="status-item share-item">
+      <button class="share-btn" id="btn-share" title="Copy link with calibration">
+        <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="11" cy="2" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="12" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="7" x2="11" y2="2" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="7" x2="11" y2="12" stroke="currentColor" stroke-width="1.2"/></svg>
+        Share calibration
+      </button>
+    </div>
+    <div class="status-spacer"></div>
+    <div class="status-item keyboard-hints" id="keyboard-hints">
+      <span>C</span> Calibrate &nbsp;·&nbsp; <span>F</span> Fullscreen &nbsp;·&nbsp; <span>H</span> H-Guide &nbsp;·&nbsp; <span>V</span> V-Guide &nbsp;·&nbsp; <span>Esc</span> Close
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ RULER LAYOUT ═══ -->
+  <main class="ruler-layout" id="ruler-layout" role="main">
+
+    <!-- Top Ruler -->
+    <div class="ruler-strip ruler-top" id="ruler-top" data-edge="top">
+      <canvas id="canvas-ruler-top" class="ruler-canvas"></canvas>
+    </div>
+
+    <!-- Middle Row: Left Ruler | Measurement Area | Right Ruler -->
+    <div class="ruler-middle-row">
+      <!-- Left Ruler -->
+      <div class="ruler-strip ruler-left" id="ruler-left" data-edge="left">
+        <canvas id="canvas-ruler-left" class="ruler-canvas"></canvas>
+      </div>
+
+      <!-- Measurement Zone -->
+      <div class="measure-area" id="measure-area" tabindex="0" aria-label="Measurement area">
+        <!-- Guides are injected here dynamically -->
+        <div class="measure-area-hint" id="measure-hint">
+          <div class="hint-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="4" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/><line x1="16" y1="2" x2="16" y2="30" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/><line x1="2" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/></svg>
+          </div>
+          <p>Click <strong>H-Guide</strong> or <strong>V-Guide</strong> to drop measurement lines<br/>or <strong>Measure</strong> to click two points</p>
+        </div>
+        <!-- Point-to-point measurement overlay -->
+        <canvas id="canvas-measure" class="measure-canvas"></canvas>
+      </div>
+
+      <!-- Right Ruler -->
+      <div class="ruler-strip ruler-right" id="ruler-right" data-edge="right">
+        <canvas id="canvas-ruler-right" class="ruler-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Bottom Ruler -->
+    <div class="ruler-strip ruler-bottom" id="ruler-bottom" data-edge="bottom">
+      <canvas id="canvas-ruler-bottom" class="ruler-canvas"></canvas>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════ CALIBRATION PANEL ═══ -->
+  <div class="panel-backdrop" id="panel-backdrop"></div>
+  <aside class="calibration-panel" id="calibration-panel" role="dialog" aria-modal="true" aria-label="Calibration settings">
+    <div class="panel-header">
+      <h2>Calibrate Your Screen</h2>
+      <button class="panel-close-btn" id="btn-panel-close" aria-label="Close calibration panel">
+        <svg width="18" height="18" viewBox="0 0 18 18"><line x1="2" y1="2" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="2" x2="2" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <!-- Method tabs -->
+      <div class="method-tabs" role="tablist">
+        <button class="method-tab active" data-method="auto" id="tab-auto" role="tab" aria-selected="true">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Auto Detect
+        </button>
+        <button class="method-tab" data-method="diagonal" id="tab-diagonal" role="tab" aria-selected="false">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="1" y1="13" x2="15" y2="3" stroke="currentColor" stroke-width="1.5"/></svg>
+          Screen Size
+        </button>
+        <button class="method-tab" data-method="creditcard" id="tab-creditcard" role="tab" aria-selected="false">
+          <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1"/></svg>
+          Credit Card
+        </button>
+        <button class="method-tab" data-method="manual" id="tab-manual" role="tab" aria-selected="false">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path d="M10 2l3 3-7 7H3v-3l7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          Manual PPI
+        </button>
+      </div>
+
+      <!-- Method: Auto Detect -->
+      <div class="method-content active" id="method-auto">
+        <div class="method-description">
+          <p>We automatically detect your device from our database using screen resolution and device pixel ratio.</p>
+        </div>
+        <div class="auto-result" id="auto-result">
+          <div class="spinner" id="auto-spinner"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="device-dropdown">Override Device</label>
+          <select class="form-select" id="device-dropdown">
+            <option value="">— Select your device —</option>
+            <optgroup label="MacBook">
+              <option value="109">MacBook Air 13" (2020+)</option>
+              <option value="113">MacBook Pro 13"</option>
+              <option value="220">MacBook Pro 14" (M1/M2)</option>
+              <option value="220">MacBook Pro 16" (M1/M2)</option>
+            </optgroup>
+            <optgroup label="Windows Laptops">
+              <option value="141">Dell XPS 13 (FHD)</option>
+              <option value="235">Dell XPS 13 (4K)</option>
+              <option value="166">Lenovo ThinkPad X1 Carbon 14"</option>
+              <option value="141">HP Spectre 13.3"</option>
+            </optgroup>
+            <optgroup label="Monitors">
+              <option value="92">27" 4K Monitor</option>
+              <option value="109">24" FHD Monitor</option>
+              <option value="82">27" FHD Monitor</option>
+              <option value="163">32" 4K Monitor</option>
+            </optgroup>
+            <optgroup label="iPad">
+              <option value="264">iPad Pro 11"</option>
+              <option value="264">iPad Pro 12.9"</option>
+              <option value="264">iPad Air (4th/5th gen)</option>
+            </optgroup>
+          </select>
+        </div>
+        <button class="apply-btn" id="btn-apply-auto">Apply Auto Calibration</button>
+      </div>
+
+      <!-- Method: Screen Diagonal -->
+      <div class="method-content" id="method-diagonal">
+        <div class="method-description">
+          <p>Enter your screen's diagonal size in inches (printed on box or device spec sheet). We'll calculate the exact PPI mathematically.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="diagonal-input">Screen Diagonal (inches)</label>
+          <div class="input-row">
+            <input type="number" class="form-input" id="diagonal-input" placeholder="e.g. 15.6" min="5" max="100" step="0.1" />
+            <span class="input-unit">″</span>
+          </div>
+          <div class="ppi-preview" id="diagonal-ppi-preview">Enter size to see PPI</div>
+        </div>
+        <button class="apply-btn" id="btn-apply-diagonal">Apply Screen Size</button>
+      </div>
+
+      <!-- Method: Credit Card -->
+      <div class="method-content" id="method-creditcard">
+        <div class="method-description">
+          <p>Place a standard credit/debit card on your screen. Drag the handles below to match the card's edges exactly.</p>
+          <div class="credit-card-spec">Standard card size: <strong>85.6 × 54 mm</strong></div>
+        </div>
+        <div class="credit-card-overlay-wrapper" id="card-overlay-wrapper">
+          <div class="credit-card-overlay" id="card-overlay">
+            <div class="card-inner">
+              <div class="card-label">Place your card here</div>
+              <div class="card-dimensions" id="card-dimensions">— × —</div>
+            </div>
+            <div class="card-resize-handle" id="card-handle" title="Drag to resize">
+              <svg width="14" height="14" viewBox="0 0 14 14"><line x1="4" y1="14" x2="14" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="14" x2="14" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+          </div>
+          <div class="card-ppi-preview" id="card-ppi-preview">Resize the card to calibrate</div>
+        </div>
+        <button class="apply-btn" id="btn-apply-card">Apply Credit Card Calibration</button>
+      </div>
+
+      <!-- Method: Manual PPI -->
+      <div class="method-content" id="method-manual">
+        <div class="method-description">
+          <p>If you know your screen's exact PPI or DPI, enter it directly.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ppi-input">Pixels Per Inch (PPI / DPI)</label>
+          <div class="input-row">
+            <input type="number" class="form-input" id="ppi-input" placeholder="e.g. 96" min="50" max="600" step="1" />
+            <span class="input-unit">PPI</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ppi-input-cm">Or enter pixels per centimeter</label>
+          <div class="input-row">
+            <input type="number" class="form-input" id="ppi-input-cm" placeholder="e.g. 37.8" min="20" max="240" step="0.1" />
+            <span class="input-unit">PPC</span>
+          </div>
+        </div>
+        <button class="apply-btn" id="btn-apply-manual">Apply Manual PPI</button>
+      </div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="current-calibration">
+        Current PPI: <strong id="panel-current-ppi">—</strong>
+        <span class="cal-source" id="panel-cal-source"></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════ MEASUREMENT RESULT TOAST ═══ -->
+  <div class="measurement-toast" id="measurement-toast" aria-live="polite">
+    <div class="toast-content">
+      <span class="toast-icon">📏</span>
+      <span id="toast-text">—</span>
+      <button class="toast-copy" id="btn-toast-copy" title="Copy measurement">
+        <svg width="14" height="14" viewBox="0 0 14 14"><rect x="4" y="1" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5v8h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+        Copy
+      </button>
+      <button class="toast-dismiss" id="btn-toast-dismiss">✕</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ COPIED TOAST ═══ -->
+  <div class="copied-toast" id="copied-toast">Copied!</div>
+
+  <script src="calibration.js"></script>
+  <script src="ruler.js"></script>
+  <script src="guides.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
